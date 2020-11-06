@@ -18,6 +18,7 @@ package constants
 
 import (
 	"fmt"
+	"knative.dev/serving/pkg/apis/autoscaling"
 	"os"
 	"regexp"
 	"strings"
@@ -103,9 +104,13 @@ type InferenceServiceComponent string
 
 type InferenceServiceVerb string
 
+type InferenceServiceProtocol string
+
+// Knative constants
 const (
 	KnativeLocalGateway   = "knative-serving/cluster-local-gateway"
 	KnativeIngressGateway = "knative-serving/knative-ingress-gateway"
+	VisibilityLabel       = "serving.knative.dev/visibility"
 )
 
 var (
@@ -123,6 +128,12 @@ const (
 const (
 	Predict InferenceServiceVerb = "predict"
 	Explain InferenceServiceVerb = "explain"
+)
+
+// InferenceService protocol enums
+const (
+	ProtocolV1 InferenceServiceProtocol = "v1"
+	ProtocolV2 InferenceServiceProtocol = "v2"
 )
 
 // InferenceService Endpoint Ports
@@ -161,6 +172,20 @@ const (
 	InferenceServiceContainerName = "kfserving-container"
 )
 
+// Multi-model InferenceService
+const (
+	ModelConfigVolumeName = "model-config"
+)
+
+var (
+	ServiceAnnotationDisallowedList = []string{
+		autoscaling.MinScaleAnnotationKey,
+		autoscaling.MaxScaleAnnotationKey,
+		StorageInitializerSourceUriInternalAnnotationKey,
+		"kubectl.kubernetes.io/last-applied-configuration",
+	}
+)
+
 func (e InferenceServiceComponent) String() string {
 	return string(e)
 }
@@ -192,14 +217,6 @@ func DefaultPredictorServiceName(name string) string {
 	return name + "-" + string(Predictor) + "-" + InferenceServiceDefault
 }
 
-func DefaultPredictorServiceURL(name string, namespace string, domain string) string {
-	return fmt.Sprintf("%s-%s-%s.%s.%s", name, string(Predictor), InferenceServiceDefault, namespace, domain)
-}
-
-func CanaryPredictorServiceURL(name string, namespace string, domain string) string {
-	return fmt.Sprintf("%s-%s-%s.%s.%s", name, string(Predictor), InferenceServiceCanary, namespace, domain)
-}
-
 func CanaryPredictorServiceName(name string) string {
 	return name + "-" + string(Predictor) + "-" + InferenceServiceCanary
 }
@@ -226,6 +243,10 @@ func DefaultServiceName(name string, component InferenceServiceComponent) string
 
 func CanaryServiceName(name string, component InferenceServiceComponent) string {
 	return name + "-" + component.String() + "-" + InferenceServiceCanary
+}
+
+func ModelConfigName(inferenceserviceName string, shardId int) string {
+	return fmt.Sprintf("modelconfig-%s-%d", inferenceserviceName, shardId)
 }
 
 func InferenceServicePrefix(name string) string {

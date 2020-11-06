@@ -22,7 +22,7 @@ tests_require = [
 
 setup(
     name='alibiexplainer',
-    version='0.4.0',
+    version='0.4.1',
     author_email='cc@seldon.io',
     license='../../LICENSE.txt',
     url='https://github.com/kubeflow/kfserving/python/kfserving/alibiexplainer',
@@ -32,7 +32,8 @@ setup(
     python_requires='>=3.6',
     packages=find_packages("alibiexplainer"),
     install_requires=[
-        "kfserving>=0.4.0",
+        "shap==0.35",
+        "kfserving>=0.4.1",
         "alibi==0.4.0",
         "scikit-learn>=0.20.3",
         "argparse>=1.4.0",
@@ -41,7 +42,8 @@ setup(
         "pandas>=0.24.2",
         "numpy>=1.16.3",
         "dill>=0.3.0",
-        "spacy>=2.1.4"
+        "spacy>=2.1.4",
+        "nest_asyncio>=1.4.0"
     ],
     tests_require=tests_require,
     extras_require={'test': tests_require}

@@ -16,13 +16,14 @@ from setuptools import setup, find_packages
 
 tests_require = [
     'pytest',
+    'pytest-asyncio',
     'pytest-tornasync',
     'mypy'
 ]
 
 setup(
     name='xgbserver',
-    version='0.4.0',
+    version='0.4.1',
     author_email='ellisbigelow@google.com',
     license='../../LICENSE.txt',
     url='https://github.com/kubeflow/kfserving/python/kfserving/xgbserver',
@@ -32,7 +33,7 @@ setup(
     python_requires='>3.4',
     packages=find_packages("xgbserver"),
     install_requires=[
-        "kfserving>=0.4.0",
+        "kfserving>=0.4.1",
         "xgboost == 0.82",
         "scikit-learn == 0.20.3",
         "argparse >= 1.4.0"
