@@ -1,0 +1,24 @@
+apiVersion: serving.kubeflow.org/v1alpha2
+kind: InferenceService
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: mnist-server
+spec:
+  default:
+    predictor:
+      logger:
+          url: http://message-dumper.default/
+          mode: all
+      custom:
+        container:
+          name: predictor
+          image: ibmandrewbutler/art-server:sklearn-mnist-v2
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "1"
+            limits:
+              memory: "2Gi"
+              cpu: "1"
