@@ -9,28 +9,64 @@ data:
         "tensorflow": {
             "image": "tensorflow/serving",
             "defaultImageVersion": "1.14.0",
-            "defaultGpuImageVersion": "1.14.0-gpu"
+            "defaultGpuImageVersion": "1.14.0-gpu",
+            "defaultTimeout": "60"
         },
         "onnx": {
             "image": "mcr.microsoft.com/onnxruntime/server",
             "defaultImageVersion": "v1.0.0"
         },
         "sklearn": {
-            "image": "gcr.io/kubeflow-ci/kfserving/sklearnserver",
+          "v1": {
+            "image": "527798164940.dkr.ecr.us-west-2.amazonaws.com/kfserving/sklearnserver",
             "defaultImageVersion": "latest"
+          },
+          "v2": {
+            "image": "docker.io/seldonio/mlserver",
+            "defaultImageVersion": "0.2.1"
+          }
         },
         "xgboost": {
-            "image": "gcr.io/kubeflow-ci/kfserving/xgbserver",
+          "v1": {
+            "image": "527798164940.dkr.ecr.us-west-2.amazonaws.com/kfserving/xgbserver",
             "defaultImageVersion": "latest"
+          },
+          "v2": {
+            "image": "docker.io/seldonio/mlserver",
+            "defaultImageVersion": "0.2.1"
+          }
         },
         "pytorch": {
-            "image": "gcr.io/kubeflow-ci/kfserving/pytorchserver",
-            "defaultImageVersion": "latest",
-            "defaultGpuImageVersion": "latest-gpu"
+          "v1" : {
+            "image": "gcr.io/kfserving/pytorchserver",
+            "defaultImageVersion": "v0.5.0-rc0",
+            "defaultGpuImageVersion": "v0.5.0-rc0-gpu",
+            "supportedFrameworks": [
+              "pytorch"
+            ],
+            "multiModelServer": "false"
+          },
+          "v2" : {
+            "image": "kfserving/torchserve-kfs",
+            "defaultImageVersion": "0.3.0",
+            "defaultGpuImageVersion": "0.3.0-gpu",
+            "supportedFrameworks": [
+              "pytorch"
+            ],
+            "multiModelServer": "false"
+          }
         },
         "triton": {
             "image": "nvcr.io/nvidia/tritonserver",
-            "defaultImageVersion": "20.03-py3"
+            "defaultImageVersion": "20.08-py3"
+        },
+        "pmml": {
+            "image": "527798164940.dkr.ecr.us-west-2.amazonaws.com/kfserving/pmmlserver",
+            "defaultImageVersion": "latest"
+        },
+        "lightgbm": {
+            "image": "527798164940.dkr.ecr.us-west-2.amazonaws.com/kfserving/lgbserver",
+            "defaultImageVersion": "latest"
         }
     }
   transformers: |-
@@ -39,13 +75,21 @@ data:
   explainers: |-
     {
         "alibi": {
-            "image" : "gcr.io/kubeflow-ci/kfserving/alibi-explainer",
+            "image" : "527798164940.dkr.ecr.us-west-2.amazonaws.com/kfserving/alibi-explainer",
+            "defaultImageVersion": "latest"
+        },
+        "aix": {
+            "image" : "527798164940.dkr.ecr.us-west-2.amazonaws.com/kfserving/aix-explainer",
+            "defaultImageVersion": "latest"
+        },
+        "art": {
+            "image" : "527798164940.dkr.ecr.us-west-2.amazonaws.com/kfserving/art-explainer",
             "defaultImageVersion": "latest"
         }
     }
   storageInitializer: |-
     {
-        "image" : "gcr.io/kubeflow-ci/kfserving/storage-initializer:latest",
+        "image" : "527798164940.dkr.ecr.us-west-2.amazonaws.com/kfserving/storage-initializer:latest",
         "memoryRequest": "100Mi",
         "memoryLimit": "1Gi",
         "cpuRequest": "100m",
@@ -68,7 +112,7 @@ data:
     }
   logger: |-
     {
-        "image" : "gcr.io/kubeflow-ci/kfserving/logger",
+        "image" : "527798164940.dkr.ecr.us-west-2.amazonaws.com/kfserving/agent:latest",
         "memoryRequest": "100Mi",
         "memoryLimit": "1Gi",
         "cpuRequest": "100m",
@@ -77,9 +121,17 @@ data:
     }
   batcher: |-
     {
-        "image" : "gcr.io/kubeflow-ci/kfserving/batcher",
-        "memoryRequest": "1Gi",
-        "memoryLimit": "1Gi",
-        "cpuRequest": "1",
-        "cpuLimit": "1"
+        "image" : "527798164940.dkr.ecr.us-west-2.amazonaws.com/kfserving/batcher:latest",
+        "memoryRequest": "100Mi",
+        "memoryLimit": "500Mi",
+        "cpuRequest": "100m",
+        "cpuLimit": "300m"
+    }
+  agent: |-
+    {
+        "image" : "527798164940.dkr.ecr.us-west-2.amazonaws.com/kfserving/agent:latest",
+        "memoryRequest": "100Mi",
+        "memoryLimit": "500Mi",
+        "cpuRequest": "100m",
+        "cpuLimit": "300m"
     }
