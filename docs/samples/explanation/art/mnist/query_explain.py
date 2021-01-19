@@ -45,6 +45,8 @@ print("TIME TAKEN: ", time.time() - x)
 
 print(res)
 res_json = res.json()
+print("Sample payload: ")
+print(res_json)
 
 adv_im = np.asarray(res_json["explanations"]["adversarial_example"])
 adv_class = res_json["explanations"]["adversarial_prediction"] 

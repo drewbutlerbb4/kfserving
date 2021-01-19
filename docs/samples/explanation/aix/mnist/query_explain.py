@@ -26,7 +26,7 @@ test_num = 1002
 is_file = False
 if len(sys.argv) > 3:
     try:
-        test_num = int(sys.argv[2])
+        test_num = int(sys.argv[3])
     except:
         is_file = True
 
@@ -57,6 +57,8 @@ print(res)
 if not res.ok:
     res.raise_for_status()
 res_json = res.json()
+print("Sample payload: ")
+print(res_json)
 temp = np.array(res_json["explanations"]["temp"])
 masks = np.array(res_json["explanations"]["masks"])
 top_labels = np.array(res_json["explanations"]["top_labels"])
