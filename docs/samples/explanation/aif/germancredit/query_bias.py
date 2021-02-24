@@ -28,4 +28,12 @@ print("TIME TAKEN: ", time.time() - time_before)
 print(res)
 if not res.ok:
     res.raise_for_status()
-print(res.json())
+res_json = res.json()
+
+# If this is an explanation request
+if "metrics" in res_json:
+    for metric in res_json["metrics"]:
+        print(metric,": ", res_json["metrics"][metric])
+# Else if it is a prediction request
+else:
+    print(res_json)
