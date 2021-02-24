@@ -12,9 +12,6 @@ spec:
           name: predictor
           image: ibmandrewbutler/aif-server:predictor
     explainer:
-      logger:
-        url: http://message-dumper.default/
-        mode: all
       custom:
         container:
           name: explainer
